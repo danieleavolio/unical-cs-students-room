@@ -1,13 +1,15 @@
 <script lang="ts">
   import Input from "./Input.svelte";
-  import { enums } from "../lib/consts/form_types";
+  import { enums } from "../../lib/consts/form_types";
   import Button from "./Button.svelte";
-  import { auth } from "../lib/firebase";
+  import { auth } from "../../lib/firebase";
   import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
   } from "firebase/auth";
+
+  import { colors } from "../consts/colors";
 
   const initialForm = {
     email: "",
@@ -36,7 +38,7 @@
         updateProfile(user, {
           displayName: form.username,
         });
-        location.reload()
+        location.reload();
         // ...
       })
       .catch((error) => {
@@ -84,12 +86,12 @@
         label={"Password"}
         type={enums.password}
       />
-      <Button text="Register" />
+      <Button text="Register" color={colors.primary} />
     </form>
   {:else}
     <form on:submit|preventDefault={signIn} class="w-full max-w-sm">
       <Input
-        bind:textValue={form.username}
+        bind:textValue={form.email}
         label={"Email address"}
         type={enums.email}
       />
@@ -98,7 +100,7 @@
         label={"Password"}
         type={enums.password}
       />
-      <Button text="Login" />
+      <Button text="Login" color={colors.primary} />
     </form>
   {/if}
 </div>

@@ -1,13 +1,10 @@
 <script lang="ts">
-  import Form from "./lib/Form.svelte";
-  import { app, db, auth } from "./lib/firebase";
-  import { onAuthStateChanged, signOut } from "firebase/auth";
+  import { onAuthStateChanged } from "firebase/auth";
+  import Form from "./lib/components/Form.svelte";
+  import UserBar from "./lib/components/UserBar.svelte";
+  import UsersTable from "./lib/components/UsersTable.svelte";
+  import { auth } from "./lib/firebase";
   import { authStore, defaultAuth } from "./lib/stores/auth";
-  import Button from "./lib/Button.svelte";
-
-  const logout = () => {
-    signOut(auth);
-  };
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -26,17 +23,16 @@
   });
 </script>
 
-<main class="flex flex-col  items-center min-h-screen bg-slate-900">
+<main class="flex flex-col gap-5  items-center min-h-screen bg-slate-900">
   <h1 class="text-4xl font-medium text-gray-200 mt-5">Students Room</h1>
   <p class="text-gray-200 text-justify p-5">
     Unical Mathematics and Computer Science Students Room
   </p>
   {#if $authStore.user}
-  <div class="text-white">
-    <p>Welcome {$authStore.user.displayName} </p>
-  </div>
-    <Button on:click={logout} text="Sign out" />
+    <UserBar />
+    <UsersTable />
   {:else}
+    <!-- If the person is not logged in-->
     <Form />
   {/if}
 </main>
